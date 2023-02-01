@@ -1,6 +1,5 @@
 import React,{useState, useEffect} from 'react'
 import { View } from './components/View';
-
 // getting the values of local storage
 const getDatafromLS=()=>{
   const data = localStorage.getItem('books');
@@ -20,8 +19,11 @@ export const App = () => {
   // input field states
   const [ad, setad]=useState('');
   const [soyad, setsoyad]=useState('');
+  const [sirket, setsirket]=useState('');
+  const [grup, setgrup]=useState('');
   const [adres, setadres]=useState('');
-
+  const [indexx, setindexx]=useState(0);
+  const [sayi, setSayi]=useState(0);
   // form submit event
   const handleAddBookSubmit=(e)=>{
     e.preventDefault();
@@ -29,18 +31,25 @@ export const App = () => {
     let book={
       ad,
       soyad,
-      adres
+      sirket,
+      grup,
+      adres,
+      indexx
     }
     setbooks([...books,book]);
     setad('');
     setsoyad('');
+    setsirket('');
+    setgrup('');
     setadres('');
+    
+    setindexx(sayi);
   }
 
   // delete book from LS
-  const deleteBook=(adres)=>{
+  const deleteBook=(indexx)=>{
     const filteredBooks=books.filter((element,index)=>{
-      return element.adres !== adres
+      return element.indexx !== indexx
     })
     setbooks(filteredBooks);
   }
@@ -57,7 +66,7 @@ export const App = () => {
       <div className='main'>
 
         <div className='form-container'>
-          <form autoComplete="off" className='form-group'
+          <form  className='form-group'
           onSubmit={handleAddBookSubmit}>
             <label>Ad </label>
             <input type="text" className='form-control' required
@@ -66,16 +75,29 @@ export const App = () => {
 
 
 
-            <br></br>
+            
             <label>Soyad  </label>
             <input type="text" className='form-control' required
             onChange={(e)=>setsoyad(e.target.value)} value={soyad}></input>
-            <br></br>
+            
+
+            <label>Sirket  </label>
+            <input type="text" className='form-control' required
+            onChange={(e)=>setsirket(e.target.value)} value={sirket}></input>
+            
+
+            <label>Grup  </label>
+            <input type="text" className='form-control' required
+            onChange={(e)=>setgrup(e.target.value)} value={grup}></input>
+            
+            
+
             <label>Adres # </label>
             <input type="text" className='form-control' required
             onChange={(e)=>setadres(e.target.value)} value={adres}></input>
             <br></br>
-            <button type="submit" className='btn btn-success btn-md'>
+            
+            <button type="submit" className='btn btn-success btn-md' onClick={(e)=>setSayi(sayi+1)}>
               ADD
             </button>
           </form>
@@ -91,6 +113,8 @@ export const App = () => {
                     <th>Adres#</th>
                     <th>Ad</th>
                     <th>Soyad</th>
+                    <th>Şirket</th>
+                    <th>Grup</th>
                     <th>Delete</th>
                   </tr>
                 </thead>
