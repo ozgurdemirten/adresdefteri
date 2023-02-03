@@ -1,5 +1,9 @@
 import React,{useState, useEffect} from 'react'
+
+
 import { View } from './components/View';
+import {listeleme} from './components/groupcompanyredSlice'
+import { useDispatch, useSelector } from 'react-redux';
 // getting the values of local storage
 const getDatafromLS=()=>{
   const data = localStorage.getItem('books');
@@ -12,6 +16,7 @@ const getDatafromLS=()=>{
 }
 
 export const App = () => {
+
 
   // main array of objects state || books state || books array of objects
   const [books, setbooks]=useState(getDatafromLS());
@@ -43,13 +48,13 @@ export const App = () => {
     setgrup('');
     setadres('');
     
-    setindexx(sayi);
+    setindexx(sayi+1);
   }
 
   // delete book from LS
-  const deleteBook=(indexx)=>{
+  const deleteBook=(adres)=>{
     const filteredBooks=books.filter((element,index)=>{
-      return element.indexx !== indexx
+      return element.adres !== adres
     })
     setbooks(filteredBooks);
   }
@@ -59,6 +64,14 @@ export const App = () => {
     localStorage.setItem('books',JSON.stringify(books));
   },[books])
 
+  //console.log(dispatch(listeleme(grup)));
+
+  //const value=useSelector((state)=>state.counter.value);
+    //console.log("burasi value" ,value);
+ // console.log(useSelector((state)=>state.counter.value));
+  //const dispatch=useDispatch();  
+  //const propertyy=grup;
+  
   return (
     <div className='wrapper'>
       <h1>Adres Defteri</h1>
@@ -97,7 +110,9 @@ export const App = () => {
             onChange={(e)=>setadres(e.target.value)} value={adres}></input>
             <br></br>
             
-            <button type="submit" className='btn btn-success btn-md' onClick={(e)=>setSayi(sayi+1)}>
+            <button type="submit" className='btn btn-success btn-md' onClick={()=>setindexx(setSayi(sayi+1))}>
+
+
               ADD
             </button>
           </form>
@@ -107,9 +122,9 @@ export const App = () => {
         <div className='view-container'>
           {books.length>0&&<>
             <div className='table-responsive'>
-              <table className='table'>
+              <table className='table' >
                 <thead>
-                  <tr>
+                  <tr >
                     <th>Adres#</th>
                     <th>Ad</th>
                     <th>Soyad</th>
